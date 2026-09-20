@@ -1,0 +1,8 @@
+/* Ordem de carregamento (feita em src/main.tsx):
+   1. tw-base.css       reset do Tailwind
+   2. tokens.css        Design tokens (Primitivo -> Semântico -> Componente), tema claro/escuro
+   3. store.css         Estilos da loja (migrados INTACTOS do projeto HTML original)
+   4. components.css    shadcn/ui adaptado + formulários + carrinho + login
+   5. admin.css         Painel administrativo
+   6. tw-utilities.css  Utilitários Tailwind
+   Este arquivo existe para o CLI do shadcn/ui e como documentação. */

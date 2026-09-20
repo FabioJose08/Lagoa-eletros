@@ -1,0 +1,43 @@
+{
+  "name": "lagoa-eletros",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Loja online da Lagoa Eletros (Lagoa do Carro - PE): React + TypeScript + Firebase",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "typecheck": "tsc --noEmit",
+    "build:strict": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "set-admin": "node scripts/set-admin.mjs",
+    "deploy:rules": "firebase deploy --only firestore:rules,storage",
+    "deploy": "npm run build && firebase deploy",
+    "test": "tsx tests/logic.test.ts"
+  },
+  "dependencies": {
+    "@radix-ui/react-label": "^2.1.0",
+    "@radix-ui/react-slot": "^1.1.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "firebase": "^10.14.1",
+    "lucide-react": "^0.454.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.28.0",
+    "sonner": "^1.7.0",
+    "tailwind-merge": "^2.5.4"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.3",
+    "autoprefixer": "^10.4.20",
+    "firebase-admin": "^12.7.0",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.14",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.10"
+  }
+}

@@ -1,0 +1,230 @@
+/* ==========================================================================
+   LAGOA ELETROS — DESIGN SYSTEM
+   Arquitetura de tokens: PRIMITIVO → SEMÂNTICO → COMPONENTE
+   Regra: nenhum componente usa cor "solta". Sempre var(--c-*) ou var(--<componente>-*).
+   ========================================================================== */
+
+/* ---------- 1. TOKENS PRIMITIVOS (valores brutos) ---------- */
+:root {
+  /* Azul — cor dominante da marca */
+  --p-blue-50: #EAF3FE;
+  --p-blue-100: #D3E6FD;
+  --p-blue-300: #7DB4F5;
+  --p-blue-500: #1477E8;   /* azul da logo — só sobre fundo escuro (4.6:1) */
+  --p-blue-600: #1268D8;   /* azul de ação — texto branco 5.25:1 */
+  --p-blue-700: #0F5CC0;
+  --p-blue-900: #0B3B91;   /* azul profundo da marca */
+  --p-blue-950: #071F4D;
+
+  /* Verde — cor secundária */
+  --p-green-50: #E8F6DE;
+  --p-green-300: #B9EA9A;
+  --p-green-500: #63C82F;  /* verde da logo — só sobre fundo escuro */
+  --p-green-700: #2E7D32;  /* verde escuro da marca — texto branco 5.13:1 */
+  --p-green-800: #256B29;
+  --p-green-900: #1F5C24;
+  --p-green-950: #12301A;
+
+  /* Amarelo — apenas pequenos destaques */
+  --p-yellow-500: #F5B82E;
+  --p-yellow-950: #1A1400;
+
+  /* Neutros claros */
+  --p-white: #FFFFFF;
+  --p-ink-50: #F4F6FA;
+  --p-ink-100: #E8ECF3;
+  --p-ink-200: #D5DAE3;
+  --p-ink-300: #A7AFBC;    /* cinza da marca */
+  --p-ink-400: #B7BFCC;
+  --p-ink-500: #5B6577;
+  --p-ink-700: #2E3646;
+  --p-ink-900: #0D1526;
+
+  /* Neutros escuros (a "noite" da marca) */
+  --p-night-950: #05070B;  /* fundo escuro da marca */
+  --p-night-900: #0A0F18;
+  --p-night-850: #0F1622;
+  --p-night-800: #141C2B;
+  --p-night-700: #1D2739;
+
+  --p-red-600: #C62828;
+  --p-red-300: #FF9A92;
+  --p-heart: #E03E4C;
+
+  /* Tipografia (uma família só: Manrope) */
+  --font-sans: "Manrope", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --fs-xs: 0.75rem;     /* 12 */
+  --fs-sm: 0.875rem;    /* 14 */
+  --fs-base: 1rem;      /* 16 */
+  --fs-md: 1.125rem;    /* 18 */
+  --fs-lg: 1.25rem;     /* 20 */
+  --fs-xl: 1.5rem;      /* 24 */
+  --fs-2xl: clamp(1.5rem, 1.15rem + 1.6vw, 2.125rem);   /* títulos de seção */
+  --fs-3xl: clamp(1.875rem, 1.3rem + 2.6vw, 2.75rem);   /* títulos de página */
+  --fs-hero: clamp(2.375rem, 1.5rem + 3.9vw, 4rem);
+  --lh-tight: 1.1;
+  --lh-snug: 1.3;
+  --lh-body: 1.55;
+
+  /* Espaçamento (escala de 4) */
+  --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px;
+  --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px; --s-20: 80px; --s-24: 96px;
+
+  /* Bordas / raio (hierarquia: cada nível tem seu raio) */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 22px;
+  --radius-full: 999px;
+
+  /* Movimento */
+  --t-fast: 120ms;
+  --t-base: 200ms;
+  --t-slow: 320ms;
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  /* Camadas */
+  --z-header: 100;
+  --z-fab: 90;
+  --z-toast: 300;
+
+  /* Layout */
+  --container: 1240px;
+  --gutter: 16px;
+  --header-h: 64px;
+}
+
+/* ---------- 2. TOKENS SEMÂNTICOS — tema claro (padrão) ---------- */
+:root {
+  color-scheme: light;
+  --c-bg: var(--p-ink-50);
+  --c-surface: var(--p-white);
+  --c-surface-2: var(--p-ink-100);
+  --c-border: var(--p-ink-200);
+  --c-border-strong: var(--p-ink-400);
+  --c-text: var(--p-ink-900);
+  --c-text-muted: var(--p-ink-500);
+  --c-primary: var(--p-blue-600);
+  --c-primary-hover: var(--p-blue-700);
+  --c-on-primary: var(--p-white);
+  --c-primary-soft: var(--p-blue-50);
+  --c-primary-soft-text: var(--p-blue-900);
+  --c-link: var(--p-blue-600);
+  --c-whatsapp: var(--p-green-700);
+  --c-whatsapp-hover: var(--p-green-800);
+  --c-on-whatsapp: var(--p-white);
+  --c-accent: var(--p-yellow-500);
+  --c-on-accent: var(--p-yellow-950);
+  --c-focus: var(--p-blue-600);
+  --c-danger: var(--p-red-600);
+  --c-heart: var(--p-heart);
+  --c-overlay: rgba(5, 7, 11, 0.62);
+
+  /* Áreas sempre escuras (header, hero, footer): identidade da marca */
+  --c-chrome-bg: var(--p-night-950);
+  --c-chrome-bg-2: var(--p-night-900);
+  --c-chrome-border: rgba(255, 255, 255, 0.1);
+  --c-on-chrome: var(--p-white);
+  --c-on-chrome-muted: var(--p-ink-300);
+  --c-chrome-focus: var(--p-blue-300);
+
+  /* Selos de condição */
+  --badge-novo-bg: var(--p-blue-50);
+  --badge-novo-fg: var(--p-blue-900);
+  --badge-usado-bg: var(--p-ink-100);
+  --badge-usado-fg: var(--p-ink-700);
+  --badge-recond-bg: var(--p-green-50);
+  --badge-recond-fg: var(--p-green-900);
+  --badge-oferta-bg: var(--p-yellow-500);
+  --badge-oferta-fg: var(--p-yellow-950);
+
+  /* Sombras */
+  --shadow-sm: 0 1px 2px rgba(13, 21, 38, 0.06), 0 1px 1px rgba(13, 21, 38, 0.04);
+  --shadow-md: 0 8px 20px -6px rgba(13, 21, 38, 0.16);
+  --shadow-lg: 0 20px 44px -14px rgba(13, 21, 38, 0.3);
+}
+
+/* Tema escuro: acompanha o sistema, a menos que o visualizador force o claro */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --c-bg: var(--p-night-900);
+    --c-surface: var(--p-night-850);
+    --c-surface-2: var(--p-night-800);
+    --c-border: var(--p-night-700);
+    --c-border-strong: #3A4863;
+    --c-text: #EEF2F8;
+    --c-text-muted: var(--p-ink-300);
+    --c-primary-soft: #10264A;
+    --c-primary-soft-text: #CFE3FC;
+    --c-link: var(--p-blue-300);
+    --c-focus: var(--p-blue-300);
+    --c-danger: var(--p-red-300);
+    --c-overlay: rgba(0, 0, 0, 0.7);
+    --badge-novo-bg: #10264A;
+    --badge-novo-fg: #CFE3FC;
+    --badge-usado-bg: var(--p-night-700);
+    --badge-usado-fg: var(--p-ink-200);
+    --badge-recond-bg: var(--p-green-950);
+    --badge-recond-fg: var(--p-green-300);
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 8px 20px -6px rgba(0, 0, 0, 0.55);
+    --shadow-lg: 0 20px 44px -14px rgba(0, 0, 0, 0.7);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --c-bg: var(--p-night-900);
+  --c-surface: var(--p-night-850);
+  --c-surface-2: var(--p-night-800);
+  --c-border: var(--p-night-700);
+  --c-border-strong: #3A4863;
+  --c-text: #EEF2F8;
+  --c-text-muted: var(--p-ink-300);
+  --c-primary-soft: #10264A;
+  --c-primary-soft-text: #CFE3FC;
+  --c-link: var(--p-blue-300);
+  --c-focus: var(--p-blue-300);
+  --c-danger: var(--p-red-300);
+  --c-overlay: rgba(0, 0, 0, 0.7);
+  --badge-novo-bg: #10264A;
+  --badge-novo-fg: #CFE3FC;
+  --badge-usado-bg: var(--p-night-700);
+  --badge-usado-fg: var(--p-ink-200);
+  --badge-recond-bg: var(--p-green-950);
+  --badge-recond-fg: var(--p-green-300);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 8px 20px -6px rgba(0, 0, 0, 0.55);
+  --shadow-lg: 0 20px 44px -14px rgba(0, 0, 0, 0.7);
+}
+
+/* ---------- 3. TOKENS DE COMPONENTE ---------- */
+:root {
+  --btn-h: 44px;
+  --btn-h-lg: 52px;
+  --btn-px: 18px;
+  --btn-radius: var(--radius-md);
+  --btn-font: 700 var(--fs-sm)/1.2 var(--font-sans);
+
+  --input-h: 48px;
+  --input-radius: var(--radius-md);
+  --input-bg: var(--c-surface);
+  --input-border: var(--c-border-strong);
+
+  --card-bg: var(--c-surface);
+  --card-border: var(--c-border);
+  --card-radius: var(--radius-lg);
+  --card-shadow: var(--shadow-sm);
+  --card-shadow-hover: var(--shadow-md);
+
+  --badge-radius: var(--radius-sm);
+  --badge-font: 800 0.6875rem/1 var(--font-sans);
+
+  --tile-bg-a: var(--c-primary-soft);
+  --tile-bg-b: var(--c-surface-2);
+  --tile-ink: var(--c-primary);
+}
+@media (min-width: 640px) { :root { --gutter: 24px; } }
+@media (min-width: 1024px) { :root { --gutter: 32px; --header-h: 72px; } }
+

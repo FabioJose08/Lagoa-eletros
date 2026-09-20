@@ -1,0 +1,2 @@
+/* Tailwind: reset (preflight). Importado ANTES dos estilos da Lagoa para que eles tenham a palavra final. */
+@tailwind base;

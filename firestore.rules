@@ -1,0 +1,121 @@
+rules_version = '2';
+
+// =====================================================================
+// LAGOA ELETROS — Regras do Cloud Firestore
+//
+// Princípio: o painel administrativo NÃO é protegido só escondendo botões.
+// Quem manda são estas regras. Administrador = usuário com o "custom claim"
+// admin=true, que só pode ser criado no servidor (script scripts/set-admin.mjs
+// com Firebase Admin SDK). Nenhum cliente consegue se promover a admin.
+// =====================================================================
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    function isAdmin() {
+      return isSignedIn() && request.auth.token.admin == true;
+    }
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    // ---------------------------------------------------------------
+    // Perfis de usuário
+    // ---------------------------------------------------------------
+    match /users/{uid} {
+      // O cliente lê só o próprio perfil; admin lê todos.
+      allow read: if isOwner(uid) || isAdmin();
+
+      // Criação: só o próprio usuário, e SEMPRE como "customer".
+      allow create: if isOwner(uid)
+        && request.resource.data.uid == uid
+        && request.resource.data.role == 'customer'
+        && request.resource.data.email == request.auth.token.email
+        && request.resource.data.name is string
+        && request.resource.data.name.size() <= 120
+        && request.resource.data.keys().hasOnly(
+             ['uid', 'name', 'email', 'phone', 'photoURL', 'role', 'createdAt', 'updatedAt']);
+
+      // Atualização: o cliente só altera nome, telefone e foto (nunca role/email/uid).
+      allow update: if isAdmin()
+        || (isOwner(uid)
+            && request.resource.data.diff(resource.data).affectedKeys()
+                 .hasOnly(['name', 'phone', 'photoURL', 'updatedAt'])
+            && request.resource.data.name is string
+            && request.resource.data.name.size() <= 120);
+
+      allow delete: if isAdmin();
+    }
+
+    // ---------------------------------------------------------------
+    // Catálogo: visitantes veem apenas itens ATIVOS. Só admin escreve.
+    // ---------------------------------------------------------------
+    match /products/{productId} {
+      allow read: if resource.data.active == true || isAdmin();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /categories/{categoryId} {
+      allow read: if resource.data.active == true || isAdmin();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /brands/{brandId} {
+      allow read: if resource.data.active == true || isAdmin();
+      allow create, update, delete: if isAdmin();
+    }
+
+    // Promoções: registro administrativo. O site público lê o preço promocional
+    // já embutido no documento do produto.
+    match /promotions/{promotionId} {
+      allow read, write: if isAdmin();
+    }
+
+    // ---------------------------------------------------------------
+    // Pedidos
+    // ---------------------------------------------------------------
+    match /orders/{orderId} {
+      // Cliente lê só os próprios pedidos; admin lê todos.
+      allow read: if isAdmin()
+        || (isSignedIn() && resource.data.userId == request.auth.uid);
+
+      // Cliente cria pedido para si mesmo, sempre "pendente" e sem estoque aplicado.
+      // (Admin também pode criar: usado só para os pedidos DEMO.)
+      allow create: if isAdmin() || (isSignedIn()
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.orderStatus == 'pending'
+        && request.resource.data.paymentStatus == 'pending'
+        && request.resource.data.stockApplied == 'none'
+        && request.resource.data.items is list
+        && request.resource.data.items.size() >= 1
+        && request.resource.data.items.size() <= 50
+        && request.resource.data.subtotal is number
+        && request.resource.data.discount is number
+        && request.resource.data.shipping is number
+        && request.resource.data.total is number
+        && request.resource.data.total >= 0
+        && math.abs(request.resource.data.total -
+             (request.resource.data.subtotal - request.resource.data.discount + request.resource.data.shipping)) < 0.01
+        && request.resource.data.paymentMethod in ['arrange_whatsapp', 'pay_on_pickup']);
+
+      // Admin altera status/estoque. Cliente só pode CANCELAR pedido ainda pendente.
+      allow update: if isAdmin()
+        || (isSignedIn()
+            && resource.data.userId == request.auth.uid
+            && resource.data.orderStatus == 'pending'
+            && request.resource.data.orderStatus == 'cancelled'
+            && request.resource.data.paymentStatus == 'cancelled'
+            && request.resource.data.diff(resource.data).affectedKeys()
+                 .hasOnly(['orderStatus', 'paymentStatus', 'updatedAt']));
+
+      allow delete: if isAdmin();
+    }
+
+    // Qualquer outro caminho: negado.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

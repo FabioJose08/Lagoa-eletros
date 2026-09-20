@@ -1,0 +1,55 @@
+rules_version = '2';
+
+// =====================================================================
+// LAGOA ELETROS — Regras do Cloud Storage
+//
+// - Qualquer pessoa pode VER as imagens públicas da loja.
+// - Só administradores (custom claim admin=true) enviam/excluem imagens da loja.
+// - Cada cliente só envia a própria foto de perfil.
+// - Somente JPG/PNG/WEBP até 5 MB.
+// =====================================================================
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    function isAdmin() {
+      return isSignedIn() && request.auth.token.admin == true;
+    }
+    function isValidImage() {
+      return request.resource != null
+        && request.resource.size < 5 * 1024 * 1024
+        && request.resource.contentType.matches('image/(jpeg|png|webp)');
+    }
+
+    match /product-images/{productId}/{allPaths=**} {
+      allow read: if true;
+      allow create, update: if isAdmin() && isValidImage();
+      allow delete: if isAdmin();
+    }
+
+    match /brand-images/{allPaths=**} {
+      allow read: if true;
+      allow create, update: if isAdmin() && isValidImage();
+      allow delete: if isAdmin();
+    }
+
+    match /category-images/{allPaths=**} {
+      allow read: if true;
+      allow create, update: if isAdmin() && isValidImage();
+      allow delete: if isAdmin();
+    }
+
+    match /profile-images/{uid}/{allPaths=**} {
+      allow read: if true;
+      allow create, update: if isSignedIn() && request.auth.uid == uid && isValidImage();
+      allow delete: if isSignedIn() && (request.auth.uid == uid || isAdmin());
+    }
+
+    // Tudo o mais: negado.
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

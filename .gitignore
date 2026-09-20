@@ -1,0 +1,8 @@
+node_modules
+dist
+.env
+.env.local
+.firebase
+*.log
+# Chave privada do Firebase Admin: NUNCA versionar
+scripts/serviceAccountKey.json

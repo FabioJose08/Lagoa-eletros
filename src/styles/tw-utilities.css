@@ -1,0 +1,3 @@
+/* Tailwind: classes utilitárias (flex, gap-2, etc.). Importado por ÚLTIMO para poder ajustar qualquer componente. */
+@tailwind components;
+@tailwind utilities;
