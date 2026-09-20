@@ -7,6 +7,7 @@ import { slugify } from '@/utils/slug';
 import { validateProductForm, validateRegister } from '@/utils/validation';
 import { waLink, WA_MESSAGES } from '@/utils/whatsapp';
 import { hasStorageConfigured } from '@/firebase/config';
+import { getPasswordResetActionCodeSettings } from '@/firebase/auth';
 import { buildImageUploadJobs, buildLocalFallbackImages } from '@/services/productService';
 import type { Product, ProductFormValues, ImageDraft } from '@/types';
 
@@ -112,7 +113,11 @@ t('fallback local usa data URL do arquivo do usuário ao invés do placeholder',
 });
 
 console.log('WHATSAPP');
-t('link', () => assert.equal(waLink(), 'https://wa.me/5581997564933'));
+t('link', () => assert.equal(waLink(), 'https://wa.me/5581973307680'));
 t('mensagem do briefing', () => { const m = decodeURIComponent(waLink(WA_MESSAGES.interest('iPhone 11')).split('text=')[1]); assert.equal(m, 'Olá! Tenho interesse no produto iPhone 11 da Lagoa Eletros. Gostaria de saber disponibilidade e informações.'); });
 t('mensagem demo avisa que é teste', () => assert.match(WA_MESSAGES.interest('X', true), /teste do site/));
+
+t('reset de senha usa a URL do site', () => {
+  assert.deepEqual(getPasswordResetActionCodeSettings('https://loja.com.br'), { url: 'https://loja.com.br/login', handleCodeInApp: false });
+});
 console.log(`\n${n} testes de lógica passaram.`);

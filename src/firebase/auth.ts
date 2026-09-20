@@ -8,6 +8,7 @@ import {
   signInWithPopup,
   signOut,
   updateProfile,
+  type ActionCodeSettings,
   type Auth,
   type Unsubscribe,
   type User as FirebaseUser,
@@ -40,8 +41,18 @@ export async function loginWithGoogle(): Promise<FirebaseUser> {
 
 export const logout = (): Promise<void> => signOut(getAuthInstance());
 
-export const requestPasswordReset = (email: string): Promise<void> =>
-  sendPasswordResetEmail(getAuthInstance(), email.trim());
+export function getPasswordResetActionCodeSettings(origin?: string): ActionCodeSettings | undefined {
+  const base = (origin ?? (typeof window !== 'undefined' ? window.location.origin : '')).trim();
+  if (!base) return undefined;
+  return { url: `${base}/login`, handleCodeInApp: false };
+}
+
+export const requestPasswordReset = (email: string): Promise<void> => {
+  const actionCodeSettings = getPasswordResetActionCodeSettings();
+  return actionCodeSettings
+    ? sendPasswordResetEmail(getAuthInstance(), email.trim(), actionCodeSettings)
+    : sendPasswordResetEmail(getAuthInstance(), email.trim());
+};
 
 /**
  * Admin = usuário com o custom claim "admin: true" no token de login.

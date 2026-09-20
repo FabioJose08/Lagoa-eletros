@@ -10,8 +10,8 @@ const CONFIG = {
   store: {
     name: 'Lagoa Eletros',
     tagline: 'Novos, usados, recondicionados e peças com o melhor custo-benefício.',
-    whatsapp: '5581997564933',
-    whatsappDisplay: '(81) 99756-4933',
+    whatsapp: '5581973307680',
+    whatsappDisplay: '(81) 97330-7680',
     hours: { days: 'Segunda a sexta', time: '08:00 às 17:00' },
     address: {
       street: 'Rodovia Coronel Francisco Heráclio',

@@ -582,6 +582,10 @@ h1[tabindex="-1"]:focus, main:focus { outline: none; }
 .footer__text { color: var(--c-on-chrome-muted); font-size: var(--fs-sm); display: grid; gap: 6px; }
 .footer__wa { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; font-weight: 700; color: var(--c-on-chrome) !important; }
 .footer__wa .icon { color: var(--p-green-500); }
+.footer__instagram { padding: 0 12px 0 0; color: var(--c-on-chrome) !important; }
+.footer__instagram .icon { color: var(--p-green-500); }
+.footer__instagram:hover { color: var(--p-green-300) !important; text-decoration: none; }
+.footer__instagram:hover .icon { color: var(--p-green-300); }
 .footer__rule { border-top: 1px solid var(--c-chrome-border); }
 .footer__bottom { padding-block: var(--s-5) calc(var(--s-5) + 68px); font-size: var(--fs-xs); color: var(--c-on-chrome-muted); display: grid; gap: 4px; }
 @media (min-width: 640px) { .footer__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }

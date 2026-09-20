@@ -1,3 +1,4 @@
+import { Camera } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { WhatsAppIcon } from '@/components/icons';
 import { MAPS, STORE } from '@/lib/constants';
@@ -26,6 +27,9 @@ export function Footer(): JSX.Element {
           <div className="footer__text">
             <a className="footer__wa" href={waLink(WA_MESSAGES.generic)} target="_blank" rel="noopener noreferrer">
               <WhatsAppIcon size={20} />{STORE.whatsappDisplay}
+            </a>
+            <a className="footer__wa footer__instagram" href={STORE.instagramUrl} target="_blank" rel="noopener noreferrer">
+              <Camera size={20} className="icon" aria-hidden="true" />Instagram {STORE.instagramHandle}
             </a>
             <p>{STORE.hours.days}<br />{STORE.hours.time}</p>
           </div>

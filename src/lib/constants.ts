@@ -3,8 +3,10 @@
 export const STORE = {
   name: 'Lagoa Eletros',
   tagline: 'Novos, usados, recondicionados e peças com o melhor custo-benefício.',
-  whatsappNumber: '5581997564933',
-  whatsappDisplay: '(81) 99756-4933',
+  whatsappNumber: '5581973307680',
+  whatsappDisplay: '(81) 97330-7680',
+  instagramHandle: '@lagoaeletros',
+  instagramUrl: 'https://www.instagram.com/lagoaeletros',
   hours: { days: 'Segunda a sexta', time: '08:00 às 17:00' },
   address: {
     street: 'Rodovia Coronel Francisco Heráclio',
