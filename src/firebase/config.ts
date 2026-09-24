@@ -2,7 +2,7 @@ import { getApp, getApps, initializeApp, type FirebaseApp, type FirebaseOptions 
 
 /* A configuração vem SEMPRE de variáveis de ambiente (arquivo .env, veja .env.example).
    Nenhuma credencial fica escrita no código. */
-const env = typeof import.meta !== 'undefined' && import.meta && 'env' in import.meta ? import.meta.env : {} as Record<string, string | undefined>;
+const env = import.meta.env;
 const rawStorageBucket = env.VITE_FIREBASE_STORAGE_BUCKET?.trim() ?? '';
 const storageEnabled = env.VITE_ENABLE_STORAGE_UPLOADS === 'true';
 
